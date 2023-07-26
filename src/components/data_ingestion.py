@@ -22,9 +22,9 @@ class Data_ingestion:
         self.data_ingestionconfig=DataConfig()
 
     def data_ingestion_intiated(self):
-        logging.info("data_ingestion started")
+        logging.info("data_ingestion_started")
         try:
-            churn_df=pd.read_csv('Note book\data\ABC_BANK.csv')
+            churn_df=pd.read_csv('Note book\data\churn_ABC_BANK.csv')
 
             os.makedirs(os.path.dirname(self.data_ingestionconfig.raw_path),exist_ok=True)
 
@@ -32,9 +32,9 @@ class Data_ingestion:
 
             train_set,test_set=train_test_split(churn_df,test_size=0.2,random_state=42)
 
-            train_set.to_csv(self.data_ingestionconfig.train_path)
+            train_set.to_csv(self.data_ingestionconfig.train_path,header=True,index=False)
 
-            test_set.to_csv(self.data_ingestionconfig.test_path)
+            test_set.to_csv(self.data_ingestionconfig.test_path,header=True,index=False)
             
             logging.info("data ingestion started")
             return (
@@ -51,13 +51,13 @@ if __name__=="__main__":
     data=Data_ingestion()
     train_set,test_set=data.data_ingestion_intiated()
 
+
+    
     data=data_transformation()
     train_ar,test_ar=data.data_transformation_object_iniatited(train_set,test_set)
 
     model_trainer=Model_trainer()
     model_trainer.Model_trainer_initiated(train_ar,test_ar)
-
-    
 
 
 

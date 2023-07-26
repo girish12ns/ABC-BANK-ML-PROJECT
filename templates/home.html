@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ABC Bank Customer Churn Prediction</title>
+</head>
+<body>
+    <div class="login">
+        <h1>ABC Bank Customer Churn</h1>
+
+        <form action="{{ url_for('predict_data') }}" method="post">
+            <h1>ABC Customer Churn</h1>
+            <div class="mb-3">
+                <label class="form-label">Geography</label>
+                <select class="form-control" name="Geography" required>
+                    <option value="" disabled selected>Select your Geography</option>
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Spain">Spain</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select class="form-control" name="Gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">CreditScore (0-1000)</label>
+                <input class="form-control" type="number" name="CreditScore" placeholder="Enter your Credit Score" min="0" max="1000" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Age</label>
+                <input class="form-control" type="number" name="Age" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tenure</label>
+                <input class="form-control" type="number" name="Tenure" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Balance</label>
+                <input class="form-control" type="number" name="Balance" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">NumberofProducts (0-4)</label>
+                <input class="form-control" type="number" name="NumOfProducts" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">HasCrCard</label>
+                <select class="form-control" name="HasCrCard" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">IsActiveMember</label>
+                <select class="form-control" name="IsActiveMember" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Estimated Salary</label>
+                <input class="form-control" type="number" name="EstimatedSalary" required />
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Predict Exited" />
+            </div>
+        </form>
+
+        <h2>
+            The prediction is {{ results }}
+        </h2>
+    </div>
+</body>
+</html>

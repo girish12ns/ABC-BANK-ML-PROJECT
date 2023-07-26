@@ -11,7 +11,10 @@ from src.utilis import save_object,model_evalution
 import sys
 import os
 from sklearn.metrics import accuracy_score
+from dataclasses import dataclass
 
+
+@dataclass
 class Model_trainerConfig:
     path=os.path.join('Artifacts','model_trainer.pkl')
 
@@ -35,7 +38,7 @@ class Model_trainer:
             'Random_forest':RandomForestClassifier(),
             'GradientBoostingClassifier':GradientBoostingClassifier()}
         
-            models_list,accu_score,f1score,precisonscore,recallscore=model_evalution(x_train=x_train,y_train=y_train,x_test=x_test,y_test=y_test,models=models)
+            models_list,accu_score=model_evalution(X_train=x_train,Y_train=y_train,X_test=x_test,Y_test=y_test,models=models)
             
             best_score_models={}
             for model,score in zip(models_list,accu_score):
@@ -49,10 +52,12 @@ class Model_trainer:
 
             best_model=models[best_models[0][0]]
 
+            print(best_model)
+
 
             save_object(file_path=self.model_trainer_config.path,obj=best_model)
 
-            best_model.fit(x_train,y_train)
+            
 
             predict=best_model.predict(x_test)
 
@@ -61,14 +66,6 @@ class Model_trainer:
             print(score)
 
 
-
-
-            return(
-                best_model
-            )
-
-
-           
         except Exception as e:
             raise customizedException(e,sys)
 

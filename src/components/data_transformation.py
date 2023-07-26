@@ -1,7 +1,7 @@
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler,OrdinalEncoder
+from sklearn.preprocessing import StandardScaler,OneHotEncoder
 import sys
 import os
 from src.exception import customizedException
@@ -9,9 +9,12 @@ from src.logger import logging
 import pandas as pd
 import numpy as np
 from src.utilis import save_object
+from dataclasses import dataclass
 
+
+@dataclass
 class Data_transfromationConfig:
-    path=os.path.join("Artifacts","preprocessor.pkl")
+    preprocessor_path=os.path.join("Artifacts","preprocessor.pkl")
 
 class data_transformation:
     def __init__(self):
@@ -23,7 +26,8 @@ class data_transformation:
                             'EstimatedSalary',]
         categorical_features=['Geography','Gender']
 
-    
+        
+
 
         
 
@@ -34,7 +38,8 @@ class data_transformation:
             ('scaler',StandardScaler())
             ])
         cat_pip=Pipeline(steps=[
-            ('imputer',SimpleImputer()),
+            ('imputer',SimpleImputer(strategy="most_frequent")),
+            ('encoder',OneHotEncoder())
             
         ])
                           
@@ -63,16 +68,16 @@ class data_transformation:
             test_input_features=test_df.drop(target_variable,axis=1)
             test_target=test_df[target_variable]
 
-            preprocessor=self.data_transformation_object()
-            train_input_features=preprocessor.fit_transform(train_input_features)
-            test_input_features=preprocessor.transform(test_input_features)
+            preprocessor_obj=self.data_transformation_object()
+            train_input_features_arr=preprocessor_obj.fit_transform(train_input_features)
+            test_input_features_arr=preprocessor_obj.transform(test_input_features)
 
-            train_ar=np.c_[train_input_features ,np.array(train_target)]
+            train_ar=np.c_[train_input_features_arr ,np.array(train_target)]
 
-            test_ar=np.c_[test_input_features,np.array(test_target)]
+            test_ar=np.c_[test_input_features_arr,np.array(test_target)]
 
-            save_object(file_path=self.data_tranformation_config.path,
-                    obj=self.data_transformation_object())
+            save_object(file_path=self.data_tranformation_config.preprocessor_path,
+                    obj=preprocessor_obj)
 
             return (
                 train_ar,

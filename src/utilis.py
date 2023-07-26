@@ -22,11 +22,9 @@ except Exception as e:
 try:
     def evalution_model(true,prediction):
         score=accuracy_score(true,prediction)
-        score_f1=f1_score(true,prediction)
-        precision=precision_score(true,prediction)
-        recall=recall_score(true,prediction)
+        
     
-        return score,score_f1,precision,recall
+        return score
 except Exception as e:
     raise customizedException(e,sys)
 
@@ -35,22 +33,20 @@ except Exception as e:
 
 
 try:
-    def model_evalution(x_train,x_test,y_train,y_test,models):
+    def model_evalution(X_train,X_test,Y_train,Y_test,models):
          models_list=[]
          accu_score=[]
-         f1score=[]
-         precisonscore=[]
-         recallscore=[]
+         
          for i in range(len(list(models))):
              model=list(models.values())[i]
     
              #training the model
-             model.fit(x_train,y_train)
+             model.fit(X_train,Y_train)
     
              #prediction:
-             Y_predict=model.predict(x_test)
+             Y_predict=model.predict(X_test)
     
-             score,score_f1,precision,recall=evalution_model(y_test,Y_predict)
+             score=evalution_model(Y_test,Y_predict)
     
    
              models_list.append(list(models.keys())[i])
@@ -59,25 +55,21 @@ try:
              accu_score.append(score)
     
             
-             f1score.append(score_f1)
-    
-            
-             precisonscore.append(precision)
-    
-          
-             recallscore.append(recall)
+             
 
-         return models_list,accu_score,f1score,precisonscore,recallscore
+         return models_list,accu_score
 except Exception as e:
     raise customizedException(e,sys)
-    
-try:
-    def load_object(file_path):
 
+
+
+def load_object(file_path):  
+    try:
         with open(file_path,"rb") as file_obj:
             return dill.load(file_obj)
-except Exception as e:
-    raise customizedException(e,sys)
+        
+    except Exception as e:
+        raise customizedException(e,sys)
     
     
              
